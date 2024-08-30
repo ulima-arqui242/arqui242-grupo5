@@ -1,6 +1,13 @@
 # Proyecto Grupal - Arquitectura de Software
 
 ## Tabla de Contenido
+- Integrantes
+  - [Alejandra San Martin Tavera](/integrantes/alejandra/alejandra.md)
+  - [Alfredo Pacheco Lizares](/integrantes/alfredo/alfredo.md)
+  - [Frank Vicente Valenzuela](/integrantes/frank/frank.md)
+  - [Joaquin Incio Diaz](/integrantes/joaquin/joaquin.md)
+  - [Rodrigo Linares](/integrantes/rodrigo/rodrigo.md)
+  - [Franco Sotelo](/integrantes/franco/franco.md)
 - [1 Caso de Negocio](./1/1.md)
   - [1.1 Generalidades](./1/1.1/1.1.md)
   - [1.2 Modelo de Negocio](./1/1.2/1.2.md)
