@@ -22,7 +22,7 @@ Principalmente las aplicaciones nativas están desarrolladas para funcionar en A
 - **Menors bugs**
   - Al tener control de un proyecto destinado a una sola plataforma, se tiene mejor control de todos los aspectos de la app y permite reducir los bugs en comparación a utiliza aplicaciones híbridas o multiplataforma.
 - **Calidad de UX**
-  - Permiten realizar interfaces más intuitivas y fluidas con la ayuda de frameworks que siguen los lineamientos de la plataforma
+  - Permiten realizar interfaces más intuitivas y fluidas con la ayuda de frameworks que siguen los lineamientos de la plataforma, además de poder acceder a sus controles y layouts.
 - **Accesibilidad a opciones nativas**
   - Pueden acceder e interactar con todas las funcionalidades del dispositivo, teniendo un mejor control de ellos al ser nativo y basado para funcionar en su sistema operativo.
 - **Seguridad**
@@ -38,17 +38,78 @@ Principalmente las aplicaciones nativas están desarrolladas para funcionar en A
 - 
 
 **1.2. Híbridas**  
-Las aplicaciones híbridas están desarrolladas utilizando tecnologías web como HTML, CSS y Javascript, esto permite que se desarrollen aplicaciones para múltiples plataformas con un solo desarrollo. Además, tienen dependencia en un navegador integrado.
+Las aplicaciones híbridas están desarrolladas utilizando tecnologías web como HTML, CSS y Javascript, esto permite que se desarrollen aplicaciones para múltiples plataformas con un solo desarrollo. Estas aplicaciones corren sobre aplicaciones nativas compatibles con el sistema operativo donde de descarga y funciona mediante WebViews.
+
+Los WebViews ejecutan contenido web dentro de la aplicación pero sin utilizar una URL visible. Este contenido web se ve adaptado en una interfaz igual que una aplicación nativa.
+- Ionic
 
 #### Ventajas
 - **Desarrollo rápido**
-  - a
+  - Se utiliza un solo proyecto para desarrollar una sola aplicación que pueda funcionar en diferentes plataformas, pues no depende de características nativas de dispositivos.
+- **Mantenibilidad**
+  - Al basarse en tecnologías web, su mantenimiento es más rápido y sencillo porque no requiere de código complejo.
+- **UX/UI**
+  - Integra las beneficios de interfaces nativas y webs.
+- **Launches**
+  - Subir actualizaciones y patches a la aplicación es más sencillo que aplicaciones nativas. Se pueden subir aplicaciones en tiendas de apps o en la web.
+- **Costos**
+  - Los costos de desarrollar aplicaciones híbridas son menores a las nativas, pues se ahorra tiempo y dinero en producir una aplicación que puede funcionar para diversos usuarios independientemente del sistema operativo de su dispositivo, requiriendo solo un desarrollo.
+- **Mayor alcance**
+  - Al ser desarrolladas para funcionar en diferentes plataformas, permiten captar a mayor cantidad de usuarios y ser instaladas en múltiples dispositivos con diferentes sistemas operativos.
+- **Acceso inmediato**
+  - Pueden ser descargadas por links, no solo mediante tiendas de apps.
 #### Desventajas
+- **Bajo control del dispositivo**
+  - Las aplicaciones híbridas tienen limitado acceso a opciones del dispositivo como la cámara o geolocalización, por lo general se requiere de plugins.
+- **Inconsistencia de SO**
+  - Hay opciones del dispositivo que puede variar dependiendo del sistema operativo, lo cual requiere de un desarrollo más meticuloso en cuanto a implementación con el uso de ciertas características del equipo en la app.
+- **Limitaciones de performance**
+  - Suponen una mayor carga para el hardware del dispositivo, lo cual puede provocar daños. El mal rendimiento afecta la velocidad y fluidez de las interfaces, pero también afecta tiempos de respuesta, precisión de la pantalla y control de gestos.
+- **Depuración y fallas**
+  - Al estar desarrolladas para múltiples plataformas, encontrar y limpiar código resulta tedioso porque se deben cuidar errores contemplado los diferentes casos dependiendo de las diferentes plataformas, lo que conlleva a realizar pruebas más seguido. Pese a esto, las fallas se pueden detectar muchas veces cuando ya han sido instaladas.
 
 **1.3. Multiplataforma**
 
-## 2. Consideraciones técnicas
+Son aplicaciones que utilizan un único código base para generar aplicaciones nativas para diferentes sistemas operativos, como Android e iOS. Esto se logra a través de frameworks que permiten compilar código nativo en cada plataforma, pues el código se convierte al lenguaje nativo del sistema operativo.
 
+Si bien es cierto que su concepto suena similar a las aplicaciones híbridas, en el caso de las multiplataforma no dependen de WebViews, por lo que el rendimiento y la seguridad es mayor. Además, son lo más cercano a aplicaciones nativas porque se cuenta con frameworks que permiten el acceso a funcionalidades nativas.
+
+- React Native
+- Flutter
+- Xamarin
+  
+#### Ventajas
+- **único código reutilizable**
+  - Se hace el desarrollo con un solo código que luego es convertido al lenguaje nativo del dispositivo donde se está instalando.
+- **Buen mantenimiento**
+  - Al solo tener un código, el testing y deployment de fixes a producción o de actualizaciones se convierte en algo más fácil, pues los cambios se verán reflejados de manera simultánea en todas las plataformas.
+- **Mayor alcance**
+  - Abarcar con un solo código múltiples plataformas permite un mayor alcance de llegada en el mercado, lo que aumenta la popularidad de negocios como startups que requieren de crecimiento rápido.
+- **Costos**
+  - Producen menores costos de desarrollo y de mantenimiento a largo plazo.
+- **Acceso a funciones nativas**
+  - Los frameworks utilizados para su desarrollo cuentan con complementos para funciones nativas de la plataforma.
+
+#### Desventajas
+- **Limitaciones de rendimiento**
+  - Estas limitaciones pueden ocurrir por el tipo de tecnologías a utilizar, si se requiere de funcionalidades muy específicas de una plataforma en particular ya no será la mejor opción.
+- **Dependencia de terceros**
+  - Al requerir de frameworks, estos pueden tener sus propias limitaciones y actualizaciones periódicas. Si el proveedor deja de dar soporte, esto afectaría la estabilidad y funcionalidad de la aplicación.
+
+
+### TOMA DE DECISIÓN
+Depende mucho del tipo de aplicación que se necesite según el negocio. A continuación, se muestra un diagrama base de cómo poder decidir cuál arquitectura es la que mejor se adecua:  
+
+![Arquitecturas](arquitecturas-moviles-decision.png)
+## 2. Consideraciones técnicas
+Para efectos del presente trabajo, se requerirán de las siguientes instalaciones:
+
+### 2.1. Aplicación nativa
+
+#### Paso 1: Se requiere installar Android Studio en su versión más actual estable
+https://developer.android.com/studio?hl=es-419 
+
+#### Paso 2: 
 
 ## 3. Demo
 
@@ -61,3 +122,9 @@ Las aplicaciones híbridas están desarrolladas utilizando tecnologías web como
 - https://www.netsolutions.com/insights/native-vs-hybrid-vs-cross-platform/
 - https://movadex.com/blog/article/native-vs-hybrid-vs-cross-platform-vs-pwa-a-comprehensive-comparison
 - https://turingpoint.de/en/blog/native-or-hybrid-app-which-is-more-secure/
+- https://www.techtarget.com/searchsoftwarequality/definition/hybrid-application-hybrid-app
+- https://www.appsflyer.com/glossary/hybrid-app/
+- https://bambu-mobile.com/
+- https://ionic.io/resources/articles/what-is-hybrid-app-developmentventajas-y-desventajas-de-las-apps-hibridas/
+- https://www.cutedigitalmedia.com/blog/desarrollo-de-aplicaciones-multiplataforma-ventajas-y-desventajas/
+- https://ed.team/blog/apps-nativas-vs-apps-multiplaformas
