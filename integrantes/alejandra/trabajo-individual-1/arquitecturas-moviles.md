@@ -35,7 +35,6 @@ Principalmente las aplicaciones nativas están desarrolladas para funcionar en A
   - Los costos suelen ser mayores para aplicaciones nativas.
 - **Costo de tiempo**
   - Si se requieren aplicaciones nativas para distintas plataformas, se debe llevar a cabo un desarrollo separado para cada una, lo cual incrementa el tiempo de desarrollo y también impacta en los costos monetarios del mismo.
-- 
 
 **1.2. Híbridas**  
 Las aplicaciones híbridas están desarrolladas utilizando tecnologías web como HTML, CSS y Javascript, esto permite que se desarrollen aplicaciones para múltiples plataformas con un solo desarrollo. Estas aplicaciones corren sobre aplicaciones nativas compatibles con el sistema operativo donde de descarga y funciona mediante WebViews.
@@ -102,14 +101,48 @@ Depende mucho del tipo de aplicación que se necesite según el negocio. A conti
 
 ![Arquitecturas](arquitecturas-moviles-decision.png)
 ## 2. Consideraciones técnicas
+
+### **Escenario**
+> El escenario de esta Demo implica la creación de una aplicación básica que permite ingresar un número de días de viaje. Esto generará una lista por cada uno de los días indicados y se podrá seleccionar entre una lista de opciones.
+
+**FIGMA:**
+![Diseño](/integrantes/alejandra/trabajo-individual-1/images/figma_diseño.png)
+https://www.figma.com/design/QqU3gosPmTAi9tyxEVpqfU/DEMO---PERSONAL-1?node-id=0-1&t=m5VYq3QmsLD9uEQW-1 
+
+
+### **Requisitos previos** 
 Para efectos del presente trabajo, se requerirán de las siguientes instalaciones:
 
 ### 2.1. Aplicación nativa
-
-#### Paso 1: Se requiere installar Android Studio en su versión más actual estable
+#### Paso 1: Se requiere instalar Android Studio en su versión más actual estable
 https://developer.android.com/studio?hl=es-419 
+#### Paso 2: Crear un Empty Project
+![Android empty](/integrantes/alejandra/trabajo-individual-1/images/android_create.png)  
 
-#### Paso 2: 
+#### Paso 3: Asignarle nombre al proyecto
+![Android empty](/integrantes/alejandra/trabajo-individual-1/images/android_name.png)
+
+
+### PARA USAR UN EMULADOR
+TODO
+
+
+### 2.2. Aplicación multiplataforma
+#### Paso 1: Instalar el SDK de Flutter  
+https://docs.flutter.dev/get-started/install
+#### Paso 2: Instalar VScode
+https://code.visualstudio.com/download 
+#### Paso 3: Crear el proyecto
+![Crear proyecto](/integrantes/alejandra/trabajo-individual-1/images/create_flutter.png)  
+
+<h3>Seleccionar el template "Application"  </h3>  
+
+![Template proyecto](/integrantes/alejandra/trabajo-individual-1/images/flutter_template.png)  
+
+<h3>Le damos nombre el proyecto: demo_flutter</h3>  
+Se crea el proyecto base:  
+
+![Base proyecto](/integrantes/alejandra/trabajo-individual-1/images/base_project.png)  
 
 ## 3. Demo
 
