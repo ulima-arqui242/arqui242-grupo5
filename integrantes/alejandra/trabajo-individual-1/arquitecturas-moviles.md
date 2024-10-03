@@ -104,6 +104,7 @@ Depende mucho del tipo de aplicación que se necesite según el negocio. A conti
 
 ### **Escenario**
 > El escenario de esta Demo implica la creación de una aplicación básica que permite ingresar un número de días de viaje. Esto generará una lista por cada uno de los días indicados y se podrá seleccionar entre una lista de opciones.
+> Se hará uso de la cámara en ambos dispositivos para tomar fotos y mostrarlas en pantalla
 
 **FIGMA:**
 ![Diseño](/integrantes/alejandra/trabajo-individual-1/images/figma_diseño.png)
@@ -144,6 +145,46 @@ Se crea el proyecto base:
 
 ![Base proyecto](/integrantes/alejandra/trabajo-individual-1/images/base_project.png)  
 
+#### Paso 4: Dependencias
+
+1. **Device Preview**
+> Se utilizará un plugin llamado Device Preview que permite ver la aplicación en diferentes dispositivos iOS, Android, MacOS, Windows y Linux
+- Se debe instalar el plugin device_preview -> https://pub.dev/packages/device_preview 
+```
+> flutter pub add device_preview
+```
+En caso no aparezca la dependencia en el archivo ``` pubspec.yaml  ```, se debe hacer un upgrade de las dependencias con el siguiente comando:
+```
+> flutter pub upgrade
+``` 
+Al requerir utilizar el package del plugin, se debe agregar al encabezado del código el siguiente import:
+```
+import 'package:device_preview/device_preview.dart';
+``` 
+  
+2. **Image Picker**
+> Se utilizará una dependencia llamada Image Picker para permitir el uso de la cámara en los dispositivos Android y iOS
+- Se debe instalar image_picker -> https://pub.dev/packages/image_picker
+
+En el caso de iOS, se requiere ingresar la siguiente configuración en el archivo ``` Info.plist ```
+```
+  <key>NSCameraUsageDescription</key>
+	<string>Used to demonstrate image picking plugin<string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio from image picker plugin</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
+```
+
+Se instala con el siguiente comando:
+```
+> flutter pub add image_picker
+```
+
+Al requerir utilizar el package del plugin, se debe agregar al encabezado del código el siguiente import:
+```
+import 'package:image_picker/image_picker.dart';
+```
 ## 3. Demo
 
 

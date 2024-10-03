@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:demo_flutter/models/Restaurant.dart';
 import 'package:demo_flutter/presentation/ItineraryViewModel.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -16,6 +19,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final scrollContoller = ScrollController();
   final TextEditingController _hostController = TextEditingController();
+  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +39,36 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                ElevatedButton(
+                    onPressed: () {
+                      _pickImageFromCamera();
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFF43A406)),
+                    ),
+                    child: const Text(
+                      "Tomar foto",
+                      style: TextStyle(color: Colors.white),
+                    )),
+
+                // VIEW IMAGE SELECTED
+                _selectedImage != null
+                    ? Container(
+                      constraints: BoxConstraints(
+                        maxWidth: double.infinity,
+                        maxHeight: 250
+                      ),
+                      child: Image.file(_selectedImage!,),
+                    )
+                    : Container(),
+
+                // GENERAR ITINERARIO
                 const Text(
                   "Generar itinerario",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 _viewModel.daysList.isNotEmpty
                     ? ListView.builder(
                         shrinkWrap: true,
@@ -54,7 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: _viewModel.daysList[index].list
                                   .map((e) => ListTile(
                                         title: Text(e.name),
-                                        trailing: Icon(Icons.favorite, color: Colors.black,),
+                                        trailing: Icon(
+                                          Icons.favorite,
+                                          color: Colors.black,
+                                        ),
                                       ))
                                   .toList(),
                               trailing: GestureDetector(
@@ -110,6 +142,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  Future _pickImageFromCamera() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
   }
 }
 
