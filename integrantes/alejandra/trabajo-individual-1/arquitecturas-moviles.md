@@ -1,5 +1,7 @@
 # ARQUITECTURAS DE APLICACIONES MÓVILES: Nativas vs Híbridas vs Multiplataforma
 
+![Decision](/integrantes/alejandra/trabajo-individual-1/images/decision.png)
+
 ## Desarollo conceptual
 ### 1. Arquitecturas de aplicaciones
 
