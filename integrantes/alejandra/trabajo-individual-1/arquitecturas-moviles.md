@@ -80,7 +80,7 @@ Si bien es cierto que su concepto suena similar a las aplicaciones híbridas, en
 - Xamarin
   
 #### Ventajas
-- **único código reutilizable**
+- **Único código reutilizable**
   - Se hace el desarrollo con un solo código que luego es convertido al lenguaje nativo del dispositivo donde se está instalando.
 - **Buen mantenimiento**
   - Al solo tener un código, el testing y deployment de fixes a producción o de actualizaciones se convierte en algo más fácil, pues los cambios se verán reflejados de manera simultánea en todas las plataformas.
@@ -102,16 +102,14 @@ Si bien es cierto que su concepto suena similar a las aplicaciones híbridas, en
 Depende mucho del tipo de aplicación que se necesite según el negocio. A continuación, se muestra un diagrama base de cómo poder decidir cuál arquitectura es la que mejor se adecua:  
 
 ![Arquitecturas](arquitecturas-moviles-decision.png)
+Fuente: https://railsware.com/blog/native-vs-hybrid-vs-cross-platform/
+
 ## 2. Consideraciones técnicas
 
 ### **Escenario**
-> El escenario de esta Demo implica la creación de una aplicación básica que permite ingresar un número de días de viaje. Esto generará una lista por cada uno de los días indicados y se podrá seleccionar entre una lista de opciones.
-> Se hará uso de la cámara en ambos dispositivos para tomar fotos y mostrarlas en pantalla
+> El escenario de esta Demo implica la creación de una aplicación básica, siguiendo el patrón de arquitectura MVVM, que permite ingresar un número de días de viaje. Esto generará una lista por cada uno de los días indicados y se podrá seleccionar entre una lista de opciones.  
 
-**FIGMA:**
-![Diseño](/integrantes/alejandra/trabajo-individual-1/images/figma_diseño.png)
-https://www.figma.com/design/QqU3gosPmTAi9tyxEVpqfU/DEMO---PERSONAL-1?node-id=0-1&t=m5VYq3QmsLD9uEQW-1 
-
+> Se hará uso de la cámara en ambos dispositivos para tomar fotos y mostrarlas en pantalla. Manejo de permisos de cámara.
 
 ### **Requisitos previos** 
 Para efectos del presente trabajo, se requerirán de las siguientes instalaciones:
@@ -125,10 +123,21 @@ https://developer.android.com/studio?hl=es-419
 #### Paso 3: Asignarle nombre al proyecto
 ![Android empty](/integrantes/alejandra/trabajo-individual-1/images/android_name.png)
 
+#### Paso 4: Dependencias
+En el ```build.gradle.kts (:app)``` se deben agregar las siguientes dependencias para poder hacer una navegación, usar inyección de dependencias (DI) y ViewModels
+```
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
 
-### PARA USAR UN EMULADOR
-TODO
+    // Dagger Hilt
+    implementation( "com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android-compiler:2.43.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    implementation("androidx.navigation:navigation-compose:2.6.0")
+```
 
 ### 2.2. Aplicación multiplataforma
 #### Paso 1: Instalar el SDK de Flutter  
@@ -142,12 +151,14 @@ https://code.visualstudio.com/download
 
 ![Template proyecto](/integrantes/alejandra/trabajo-individual-1/images/flutter_template.png)  
 
-<h3>Le damos nombre el proyecto: demo_flutter</h3>  
-Se crea el proyecto base:  
+#### Paso 4: Estructura de carpetas
+![Carpetas del proyecto](/integrantes/alejandra/trabajo-individual-1/images/flutter_carpetas.png)  
 
-![Base proyecto](/integrantes/alejandra/trabajo-individual-1/images/base_project.png)  
+En la estructura se pueden ver carpetas para diferentes sistemas operativos en específico, los cuales son: Android, iOS, MacOS, Linux y Windows. Esta estructura es parte de la ventaja de las aplicaciones multiplataforma, puesto permiten realizar desarrollo para estos sistemas operativos en caso se requiera de alguna configuración especial para alguno de estos SO. Por ejemplo, en el caso de esta demo, se requiere de añadir unos permisos en la carpeta de iOS para el uso de la cámara (luego se explicará dónde), pero en el caso de Android no.
 
-#### Paso 4: Dependencias
+Esto permite realizar desarrollos cercanos a lo que podría ser un desarrollo nativo, pero dentro de las ventajas que ofrece el desarrollo de aplicaciones multiplataforma.
+
+#### Paso 5: Dependencias
 
 1. **Device Preview**
 > Se utilizará un plugin llamado Device Preview que permite ver la aplicación en diferentes dispositivos iOS, Android, MacOS, Windows y Linux
@@ -187,9 +198,27 @@ Al requerir utilizar el package del plugin, se debe agregar al encabezado del c�
 ```
 import 'package:image_picker/image_picker.dart';
 ```
+
+## Se puede utilizar un emulador para realizar las pruebas
+#### Paso 1: Creación de un dispositivo en el Device Manager de Android Studio
+![Virtual device](/integrantes/alejandra/trabajo-individual-1/images/create_virtual_device.png)
+
+#### Paso 2: Selección del equipo Android a emular  
+![Virtual device selector](/integrantes/alejandra/trabajo-individual-1/images/virtual_device_selector.png)
+De preferencia, al crear un emulador es mejor uno que tenga la Play Store  
+
+#### Paso 3: Selección de la versión de Android
+![Virtual device version](/integrantes/alejandra/trabajo-individual-1/images/virtual_device_version.png)
+En caso de no tener la API Version de Android instalada, se requerirá su instalación  
+
+#### Paso 4: Configuraciones extras del emulador
+![Virtual device config](/integrantes/alejandra/trabajo-individual-1/images/virtual_device_config.png) 
+Se pueden incluir configuraciones extras como de rendimiento, el acceso al tipo de cámara virtual, la conexión a internet del emulador y demás.  
+
+
 ## 3. Demo
 
-
+Link de la demo: https://youtu.be/F3v4ipfx_Uw
 
 
 ### Fuentes
