@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "7d9fbd03-381d-4f12-8360-8e2a3cba50cc",
+		"name": "Pruebas de Integración - Registro y Autenticación",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28552848"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Registro exitoso\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.expect(pm.response.json().message).to.eql('Usuario registrado exitosamente');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"username\": \"testUser\",\r\n      \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{urlAPI}}/register",
+					"host": [
+						"{{base_url}}{{urlAPI}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login exitoso\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"   pm.expect(pm.response.json().token).to.be.a('string');\r",
+							"   });\r",
+							"\r",
+							"   // Guardar el token de autenticación en el entorno\r",
+							"   var jsonData = pm.response.json();\r",
+							"   pm.environment.set(\"auth_token\", jsonData.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"username\": \"testUser\",\r\n   \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{urlAPI}}/login",
+					"host": [
+						"{{base_url}}{{urlAPI}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (!pm.environment.get(\"auth_token\")) {\r",
+							"      pm.sendRequest({\r",
+							"      url: pm.environment.get(\"base_url\") + \"/login\",\r",
+							"      method: 'POST',\r",
+							"      header: {\r",
+							"         'Content-Type': 'application/json'\r",
+							"      },\r",
+							"      body: {\r",
+							"         mode: 'raw',\r",
+							"         raw: JSON.stringify({\r",
+							"         \"username\": \"testUser\",\r",
+							"         \"password\": \"password123\"\r",
+							"         })\r",
+							"      }\r",
+							"      }, function (err, res) {\r",
+							"         if (!err) {\r",
+							"            var jsonData = res.json();\r",
+							"            pm.environment.set(\"auth_token\", jsonData.token);\r",
+							"         }\r",
+							"      });\r",
+							"   }"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Acceso permitido\", function () {\r",
+							"    pm.response.to.have.status(200); // Verifica que el código de estado sea 200\r",
+							"\r",
+							"    // Obtener el cuerpo de la respuesta\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    // Verificar que el mensaje sea \"Acceso permitido\"\r",
+							"    pm.expect(jsonData.message).to.eql('Acceso permitido');\r",
+							"\r",
+							"    // Verificar que el campo 'user' exista y tenga un username correcto\r",
+							"    pm.expect(jsonData.user).to.be.an('object');\r",
+							"    pm.expect(jsonData.user.username).to.eql('testUser');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}{{urlAPI}}/protected",
+					"host": [
+						"{{base_url}}{{urlAPI}}"
+					],
+					"path": [
+						"protected"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prueba Stripe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verificar que el código de estado es 200 (éxito)\r",
+							"pm.test(\"Estado de la respuesta es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verificar que la respuesta contiene el clientSecret\r",
+							"pm.test(\"La respuesta contiene clientSecret\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"clientSecret\");\r",
+							"});\r",
+							"\r",
+							"// Guardar el clientSecret en el entorno de Postman para usarlo en futuras solicitudes\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"clientSecret\", jsonData.clientSecret);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"amount\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/create-payment-intent",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"create-payment-intent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prueba Facebook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verificar que el código de estado es 200 (éxito)\r",
+							"pm.test(\"Estado de la respuesta es 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verificar que la respuesta contiene el nombre y el email\r",
+							"pm.test(\"La respuesta contiene nombre y email\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"name\");\r",
+							"    pm.expect(jsonData).to.have.property(\"email\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"access_token\": \"EAAMeAER6H7MBO8dOAsKpZCwUDNMZBZAnsAUKRg0xdRfzCUUuZCdf3okoSIKT7gLCjSL7ZCvwn4mElkguBmnnQmdYQIFmgaaSmBZAvvzSdyP96ZBnWlXZBzN6hiA2YSwu49wJNt4SWBEWLter2wsTWYZCOZBlU8ZCYursLSGDpZBo2ZCnBD4mMeMVKa0H4G6DXZBcHeuZAc6Idv28amsBXZA2GExZAtmfiav1LelmjghoYnNafZCnWDmkYTA8o5ulZAsDSqvMnoLfAZDZD\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/facebook-login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"facebook-login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
