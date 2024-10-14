@@ -1,0 +1,74 @@
+# Importar SparkSession y funciones adicionales
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, when
+from pyspark.ml.regression import LinearRegression
+from pyspark.ml.feature import VectorAssembler
+
+# Extract: Cargar los datos sin procesar de un archivo CSV
+ventas_raw_df = spark.read.csv("ventas_db_demo.csv", header=True, inferSchema=True)
+
+# Mostrar los datos crudos
+ventas_raw_df.show()
+
+# Transform: Limpiar y transformar los datos
+# Precio puesto en dolares para mostrar como se puede convertir con Spark
+
+ventas_clean_df = ventas_raw_df \
+    .fillna({"precio": 0, "descuento": 0, "categoria": "Desconocido"}) \
+    .withColumn("precio", col("precio") * 3.8) \
+    .withColumn("descuento", col("descuento") * 3.8)
+
+# Calcular total_ventas antes de ajustar el modelo
+ventas_clean_df = ventas_clean_df.withColumn("total_ventas", (col("precio") * col("cantidad")) - col("descuento"))
+
+# Mostrar los datos después de la limpieza
+ventas_clean_df.show()
+
+# Load: Crear una vista temporal para realizar consultas SQL
+ventas_clean_df.createOrReplaceTempView("ventas_limpias")
+
+# Consulta 1: Calcular el total de ventas por producto
+total_ventas_por_producto = spark.sql("""
+    SELECT producto, SUM(precio * cantidad) AS total_ventas_sin_dsc
+    FROM ventas_limpias
+    GROUP BY producto
+    ORDER BY total_ventas_sin_dsc DESC
+""")
+total_ventas_por_producto.show()
+
+# Consulta 2: Obtener los productos más vendidos (por cantidad)
+productos_mas_vendidos = spark.sql("""
+    SELECT producto, SUM(cantidad) AS cantidad_vendida
+    FROM ventas_limpias
+    GROUP BY producto
+    ORDER BY cantidad_vendida DESC
+""")
+productos_mas_vendidos.show()
+
+# Consulta 3: Total de ventas por tienda
+ventas_por_categoria = spark.sql("""
+    SELECT tienda, SUM(precio * cantidad) AS total_ventas
+    FROM ventas_limpias
+    GROUP BY tienda
+    ORDER BY total_ventas DESC
+""")
+ventas_por_categoria.show()
+
+# Consulta 4: Total de consumo por cliente
+consumo_por_cliente = spark.sql("""
+    SELECT cliente, SUM(total_ventas) AS total_ventas_cliente
+    FROM ventas_limpias
+    GROUP BY cliente
+    ORDER BY total_ventas_cliente DESC
+""")
+consumo_por_cliente.show()
+
+# Almacenamiento de los datos procesados en formato Parquet (optimizado para grandes volúmenes)
+ventas_clean_df.write.mode("overwrite").parquet("/path/to/ventas_limpias_parquet")
+
+# Mostrar el esquema de los datos guardados
+ventas_parquet = spark.read.parquet("/path/to/ventas_limpias_parquet")
+ventas_parquet.printSchema()
+
+# Generar estadísticas descriptivas sobre los datos
+ventas_clean_df.describe().show()
