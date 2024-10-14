@@ -1,6 +1,6 @@
 # SEGURIDAD DE API'S: Autentificación y Autorización
 ---
-![Figura1](/trabajo1-individual-joaquin/what-is-api-security.avif)
+![Figura1](./what-is-api-security.png)
 
 ## Desarrollo Conceptual
 ---
