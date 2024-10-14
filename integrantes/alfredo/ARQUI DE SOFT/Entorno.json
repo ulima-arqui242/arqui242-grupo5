@@ -1,0 +1,33 @@
+{
+	"id": "e3fddeb4-5252-4c71-94fa-113cd02b5cee",
+	"name": "Entorno de Pruebas",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "urlAPI",
+			"value": "/api",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "clientSecret",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-10-14T12:28:34.072Z",
+	"_postman_exported_using": "Postman/11.15.0"
+}

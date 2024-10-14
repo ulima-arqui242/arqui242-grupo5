@@ -1,0 +1,17 @@
+{
+  "name": "proyecto-pruebas",
+  "version": "1.0.0",
+  "description": "Un proyecto para demostrar pruebas unitarias usando Jest",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Alfredo",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "dependencies": {}
+}
