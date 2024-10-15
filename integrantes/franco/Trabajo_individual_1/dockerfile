@@ -1,0 +1,11 @@
+# Usa la imagen oficial de InfluxDB
+FROM influxdb:2.7
+
+# Configura variables de entorno para la inicialización
+ENV INFLUXDB_ADMIN_USER=admin
+ENV INFLUXDB_ADMIN_PASSWORD=admin1234
+ENV INFLUXDB_BUCKET=demo-bucket
+ENV INFLUXDB_ORG=ArquiSoft
+
+# Exponer el puerto de InfluxDB
+EXPOSE 8086
