@@ -4,10 +4,15 @@
 Una base de datos de series temporales (TSDB, por sus siglas en inglés) está diseñada para almacenar y gestionar datos que varían con el tiempo. Cada registro incluye una **marca de tiempo**, un **valor** y, a menudo, **etiquetas** que añaden contexto. Estas bases de datos permiten analizar rápidamente patrones, detectar anomalías y monitorear eventos en tiempo real, lo cual es ideal para aplicaciones de IoT, análisis financiero y monitoreo de sistemas.
 
 ## 2. Características Principales
-Las TSDB ofrecen ventajas específicas que las hacen ideales para datos que cambian con el tiempo:
-- **Optimización para consultas de tiempo**: Facilitan búsquedas rápidas dentro de rangos de tiempo específicos.
-- **Compresión de datos**: Utilizan técnicas avanzadas para reducir el almacenamiento necesario.
-- **Alta velocidad en la ingestión de datos**: Pueden manejar grandes volúmenes de datos en tiempo real sin afectar el rendimiento.
+
+Las bases de datos de series temporales (TSDB) están diseñadas específicamente para manejar datos que cambian a lo largo del tiempo. Algunas de sus características más importantes son:
+
+- **Consultas optimizadas por tiempo**: Las TSDB permiten realizar búsquedas rápidas y eficientes basadas en intervalos de tiempo específicos. Esto significa que puedes fácilmente recuperar y analizar datos de, por ejemplo, las últimas 24 horas o la última semana, sin ralentizar el sistema.
+
+- **Compresión de datos**: Estas bases de datos utilizan técnicas avanzadas de compresión, como la **codificación por delta**, **compresión RLE (Run-Length Encoding)**, **codificación XOR** y **compresión basada en esquemas**. Estas técnicas permiten almacenar grandes cantidades de datos de manera eficiente, ocupando menos espacio en disco y manejando mejor series de datos que cambian constantemente.
+
+- **Alta velocidad de ingestión de datos**: Las TSDB están optimizadas para recibir datos a gran velocidad y en tiempo real. Esto permite manejar grandes volúmenes de datos que llegan constantemente (por ejemplo, datos de sensores o métricas de rendimiento) sin comprometer el rendimiento del sistema.
+
 
 ## 3. Casos de Uso Comunes
 Las bases de datos de series temporales se utilizan en diversos escenarios:
@@ -40,56 +45,7 @@ Las bases de datos de series temporales se utilizan en diversos escenarios:
 | **Casos de Uso**    | IoT, métricas   | Finanzas, IoT     | DevOps         |
 | **Licencia**        | Open-source     | Open-source       | Open-source    |
 
-## 6. Demo Práctica: Ingreso y Consulta de Datos con InfluxDB
-
-Para esta demo, usaremos **InfluxDB** y **Python** para simular la inserción y consulta de datos de temperatura. 
-
-### 6.1 Requisitos Previos
-- **InfluxDB**: Instalado localmente o en un contenedor Docker.
-- **Python**: Con la librería `influxdb-client` instalada.
-
-### 6.2. Código de Ejemplo
-```python
-from influxdb_client import InfluxDBClient, Point
-from influxdb_client.client.write_api import SYNCHRONOUS
-import random
-import time
-```
-# Configuración
-```
-token = "tu_token"
-org = "tu_organización"
-bucket = "mi_bucket"
-url = "http://localhost:8086"
-client = InfluxDBClient(url=url, token=token, org=org)
-write_api = client.write_api(write_options=SYNCHRONOUS)
-```
-# Generar y enviar datos
-```
-for _ in range(10):
-    point = Point("temperature").field("value", random.uniform(20.0, 30.0))
-    write_api.write(bucket=bucket, org=org, record=point)
-    time.sleep(1)
-```
-
-### 6.3. Explicación del Código
-Este código genera datos de temperatura simulados y los envía a InfluxDB. Cada registro incluye:
-- **Nombre de la medición**: `temperature`
-- **Valor**: Un número aleatorio entre 20 y 30 grados.
-- **Tiempo**: La marca de tiempo se asigna automáticamente.
-
-### 6.4. Consulta de Datos
-Después de insertar los datos, puedes usar el siguiente código para realizar una consulta en InfluxDB:
-```python
-query_api = client.query_api()
-query = f'from(bucket:"{bucket}") |> range(start: -1h)'
-result = query_api.query(org=org, query=query)
-
-for table in result:
-    for record in table.records:
-        print(f"Time: {record.get_time()}, Value: {record.get_value()}")
-```
-## 7. Link Demo
-[Demo]()
-## 8. Conclusiones
+## 6. Link Demo
+[Demo](https://www.youtube.com/watch?v=urZxMHaaRYI)
+## 7. Conclusiones
 Las bases de datos de series temporales ofrecen una solución eficiente para manejar datos que varían con el tiempo. InfluxDB, TimescaleDB y Prometheus son opciones sólidas para diferentes escenarios y necesidades. Elegir la base de datos adecuada depende del tipo de datos, el volumen y los requisitos de rendimiento específicos de la aplicación.
