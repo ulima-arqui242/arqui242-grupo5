@@ -52,6 +52,29 @@ El **despliegue continuo** es el proceso de liberar automáticamente el código qu
   - Reducción de problemas de configuración entre entornos.
   - Fácil integración con Jenkins para despliegues en contenedores.
 
+ ## Ventajas
+
+- **Automatización del despliegue**: Gracias a Jenkins, el proceso de despliegue se realiza automáticamente tras cada cambio en el código.
+- **Portabilidad**: Docker garantiza que la aplicación se ejecuta de manera consistente en diferentes entornos.
+- **Colaboración eficiente**: Facilita la colaboración entre desarrolladores y equipos de operaciones.
+
+## Desventajas
+
+- **Complejidad inicial**: La configuración de Jenkins y Docker puede ser compleja para principiantes.
+- **Costos de Infraestructura**: Dependiendo de la escala del proyecto, los contenedores y la automatización pueden requerir más recursos.
+
+## Referencias
+
+- [Jenkins](https://www.jenkins.io/)
+- [Docker](https://www.docker.com/)
+- [Node.js](https://nodejs.org/)
+
+---
+
+## Enlace a la Demo del Video
+
+Enlace al video de la demo: https://www.youtube.com/watch?v=QyQjIkE2Dpw
+
 ## Toma de Decisiones
 ---
 ### Factores Clave
@@ -123,26 +146,3 @@ pipeline {
         }
     }
 }
-
-## Ventajas
-
-- **Automatización del despliegue**: Gracias a Jenkins, el proceso de despliegue se realiza automáticamente tras cada cambio en el código.
-- **Portabilidad**: Docker garantiza que la aplicación se ejecuta de manera consistente en diferentes entornos.
-- **Colaboración eficiente**: Facilita la colaboración entre desarrolladores y equipos de operaciones.
-
-## Desventajas
-
-- **Complejidad inicial**: La configuración de Jenkins y Docker puede ser compleja para principiantes.
-- **Costos de Infraestructura**: Dependiendo de la escala del proyecto, los contenedores y la automatización pueden requerir más recursos.
-
-## Referencias
-
-- [Jenkins](https://www.jenkins.io/)
-- [Docker](https://www.docker.com/)
-- [Node.js](https://nodejs.org/)
-
----
-
-## Enlace a la Demo del Video
-
-Enlace al video de la demo: [Coloca aquí tu URL de la demo]
