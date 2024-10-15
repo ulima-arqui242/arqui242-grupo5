@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the Docker image...'
+                script {
+                    // Construye la imagen Docker
+                    docker.build('devops-example-image', '-f codigo/Dockerfile .')
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // Aquí puedes definir comandos de prueba si los tienes
+                sh 'docker run devops-example-image node codigo/server.js'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // Ejecuta el contenedor
+                sh 'docker run -d -p 3000:3000 devops-example-image'
+            }
+        }
+    }
+}
