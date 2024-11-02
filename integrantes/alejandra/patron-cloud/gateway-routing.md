@@ -36,3 +36,144 @@ En lugar de hacer peticiones dirigiéndose directamente a los microservicios, Ko
 3. Kong puede aplicar autenticación, validación o transformación a la solicitud.
 4. Una vez procesada, la solicitud se reenvía al backend correspondiente, que responde a través de Kong de vuelta al frontend.
 5. **ADICIONAL:** Kong puede aplicar transformaciones adicionales a la respuesta antes de enviarla de vuelta al cliente.
+
+## DEMO - IMPLEMENTACIÓN
+
+Para esta demo se utilizará Kong como API Gateway utilizando Docker, PostgreSQL para guardar sus configuraciones y Node.js para la creación de los microservicios de prueba.
+
+
+### 1. Crear un proyecto para el backend usand Node.js
+
+Primero, se creó una carpeta "backend" y luego se ejecutó el siguiente comando dentro de dicha carpeta para crear el proyecto Node
+
+```
+npm init
+```
+
+Luego, se instaló Express, el cual se utilizará para configurar el backend y todos los microservicios a utilizar en esta demo. Para ello, se utilizó el siguiente comando:
+
+```
+npm i express
+```
+
+Finalmente, tenemos el proyecto base creado:  
+
+![Paso 1](/integrantes/alejandra/patron-cloud/images/paso1.png)
+
+### 2. Configurar una red en Docker para poder utilizar Kong
+```
+docker network create kong-net
+```
+
+### 3. Iniciar un contenedor en PostgreSQL y configurarlo
+Se define un usuario, el nombre de la BD y una contraseña con el siguiente comando:
+```
+docker run -d --name kong-database --network kong-net -p 5432:5432 -e POSTGRES_USER=kong -e POSTGRES_DB=kong -e POSTGRES_PASSWORD=kong postgres:latest
+```
+Luego, se realiza una configuración donde
+- **KONG_DATABASE:** El tipo de DB a utilizar
+- **KONG_PG_HOST:** El nombre del contenedor de PostgreSQL en Docker que se comunica con el "kong-net" network
+- **KONG_PG_PASSWORD:** La contraseña que se seteó en el paso anterior para el contenedor de PostgreSQL
+
+También se podría agregar la siguiente información en el caso de ser un _enterpise_:
+- **KONG_PASSWORD:** Contraseña del administrador con el SuperUsuario para la Gateway con Kong.
+
+```
+docker run --rm --network kong-net -e KONG_DATABASE=postgres -e KONG_PG_HOST=kong-database -e KONG_PG_PASSWORD=kong kong kong migrations bootstrap
+```
+### 4. Iniciar Kong
+
+```
+docker run -d --name kong --network kong-net -e KONG_DATABASE=postgres -e KONG_PG_HOST=kong-database -e KONG_PG_PASSWORD=kong -e KONG_PROXY_ACCESS_LOG=/dev/stdout -e KONG_ADMIN_ACCESS_LOG=/dev/stdout -e KONG_PROXY_ERROR_LOG=/dev/stderr -e KONG_ADMIN_ERROR_LOG=/dev/stderr -e KONG_ADMIN_LISTEN=0.0.0.0:8001 -p 8000:8000 -p 8443:8443 -p 8001:8001 -p 8444:8444 kong
+```
+
+## CONTENEDORES CREADOS Y ACTIVOS EN DOCKER DESKTOP:
+![Containers](/integrantes/alejandra/patron-cloud/images/containers.png)
+
+### 5. Crear los proyectos para los microservicios
+Luego de inciar Kong, se crearon 2 microservicios básicos en el proyecto del backend utilizando Express. Estos microservicios creados fueron "user-service" y "product-services" para efecto de la demo.
+
+Primero, después de crear las carpetas dentro de "backend" para cada uno de los microservicios, se procede a crear un proyecto de Node.js dentro de cada una. Por ejemplo, dentro de la carpeta de "user-service" se deben correr los siguientes comandos para crear el proyecto e instalar Express.
+```
+npm init -y
+npm i express
+```
+El proceso se debería repetir para cada uno de los microservicios que utilizarán la misma tecnología.
+
+![Crear proyecto de microservicios](/integrantes/alejandra/patron-cloud/images/microservicios-proyectos.png)
+
+### 6. Crear los microservicios y endpoint básico
+
+Dentro de cada microservicios se creó un archivo ```server.js``` donde se realizó una configuración básica para utilizar puertos diferentes para cada microservicios y una ruta básica para un endpoint pequeño de prueba
+
+### user-service:  
+![User service code](/integrantes/alejandra/patron-cloud/images/user-service.png)
+
+### products-service:  
+
+![Products service code](/integrantes/alejandra/patron-cloud/images/products-service.png)
+
+Finalmente, dentro de los respectivos directorios se debe ejecutar el siguiente comando para verificar que están ejecutándose los microservicios en sus respectivos puertos locales correctamente:
+
+```
+node server.js
+```
+
+#### Resultado:  
+
+![Microservices localhost working](/integrantes/alejandra/patron-cloud/images/localhost-microservices.png)
+
+### 7. Agregar los servicios a Kong
+
+Una vez ya configurados y funcionando correctamente los microservicios, se debe configurar Kong para que tenga dentro de sus configuraciones las rutas de cada uno de ellos. Para ello, se deben correr los siguientes comandos:
+
+```
+curl -i -X POST http://localhost:8001/services/ --data name=user-service --data url=http://host.docker.internal:3001
+```
+
+![Configuracion users pt1](/integrantes/alejandra/patron-cloud/images/configuracion-users-kong.png)
+
+```
+curl -i -X POST http://localhost:8001/services/user-service/routes --data paths[]=/user-service
+```
+
+![Configuracion users pt2](/integrantes/alejandra/patron-cloud/images/configuracion-users-kong-pt2.png)
+
+De manera similar, con el microservicio de productos se debe realizar igual con los siguientes comandos:
+```
+curl -i -X POST http://localhost:8001/services/ --data name=product-service --data url=http://host.docker.internal:3002  
+
+curl -i -X POST http://localhost:8001/services/product-service/routes --data paths[]=/product-service
+```
+
+### 8. Verificar la creación de servicios y rutas en Kong
+
+Para verificar que se han creado correctamente los servicios y rutas, y que Kong las reconoce dentro de su network, podemos seguir los siguientes pasos apuntando al puerto 8001 donde se encuentran todas las configuraciones de Kong  
+
+Para ver los servicios creados y reconocidos por Kong:
+```
+curl -i http://localhost:8001/services 
+```
+![Servicios creados](/integrantes/alejandra/patron-cloud/images/created-services.png)
+
+Para ver las rutas creadas y reconocidas por Kong:
+```
+curl -i http://localhost:8001/routes 
+```
+![Rutas creadas](/integrantes/alejandra/patron-cloud/images/created-routes.png)
+
+### 9. Respuesta de microservicios mediante Kong
+
+Para ver que se traen correctamente los endpoints de cada microservicio mediante las rutas que hemos definido para ellos, se debe apuntar al puerto 8000. Para esta demo, se siguen las siguientes rutas para el caso del microservicio **user-service**:
+
+```
+curl -i http://localhost:8000/user-service/  
+
+curl -i http://localhost:8000/user-service/users
+```
+
+![Respuesta user-service](/integrantes/alejandra/patron-cloud/images/res-users.png)
+
+Para el servicio de **product-service**:
+
+![Respuesta product-service](/integrantes/alejandra/patron-cloud/images/res-products.png)
