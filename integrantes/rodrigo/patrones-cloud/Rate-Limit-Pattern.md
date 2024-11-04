@@ -23,3 +23,21 @@ En el caso de Turi, este patrón se podría aplicar en el módulo de **recomendacio
 - Se debe tener cuidado de implementar una política de límite adecuada para no impactar negativamente la experiencia del usuario, limitando excesivamente las solicitudes.
 - Es importante que los usuarios sean notificados con respuestas adecuadas (como HTTP 429) cuando alcancen el límite de solicitudes.
 - Se puede considerar la implementación de mecanismos de "back-off", que incrementen progresivamente el tiempo de espera antes de permitir más solicitudes cuando se alcanza el límite.
+
+#Explicación del código
+
+Este proyecto implementa un patrón de Rate Limiting en una API usando Flask.
+
+## Estructura del proyecto
+- **app/**: Contiene el código de la aplicación.
+- **app/routes/**: Rutas de la API.
+- **app/utils/**: Funciones auxiliares.
+- **tests/**: Pruebas unitarias.
+
+## Cómo ejecutar el proyecto
+1. Instalar dependencias: `pip install -r requirements.txt`
+2. Ejecutar la aplicación: `python app/main.py`
+
+## Cómo ejecutar las pruebas
+
+$ python -m unittest tests/test_routes.py
