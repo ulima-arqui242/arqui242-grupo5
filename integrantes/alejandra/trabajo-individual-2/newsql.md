@@ -382,7 +382,7 @@ Vemos que se creó correctamente el backup dentro del nodo 1:
 
 ## 3. Demo
 
-Link de la demo: 
+Link de la demo: https://youtu.be/OHXGO_Jic-k
 
 ### Fuentes
 - https://amarchenko.dev/blog/2024-03-13-new-sql/
