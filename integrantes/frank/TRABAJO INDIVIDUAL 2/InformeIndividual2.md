@@ -78,9 +78,9 @@ En esta imagen, Nginx es el servicio que se ejecutará dentro del contenedor par
 - Debian: es una distribución de Linux muy popular, conocida por su estabilidad y seguridad.
 Esto significa que la imagen del contenedor está configurada para ejecutar Nginx sobre una instalación mínima de Debian. 
 
-Link de video: 
+Link de video: https://www.youtube.com/watch?v=qyOVkTVxe8o
 
-1) Instalación de Docker Dekstop: Para la demo, instalaremos Docker Deskstop, el cual es el entorno donde se manejan los contenedores, imagenes y otros conceptos.
+1) Instalación de Docker Desktop: Para la demo, instalaremos Docker Desktop, el cual es el entorno donde se manejan los contenedores, imagenes y otros conceptos.
     Para esto, lo instalaremos desde la pagina oficial de Docker: https://www.docker.com/get-started/
    
 ![Paso 1](imagenes/1.png)
