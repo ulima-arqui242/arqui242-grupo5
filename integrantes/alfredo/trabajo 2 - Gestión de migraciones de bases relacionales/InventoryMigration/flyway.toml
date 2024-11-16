@@ -1,0 +1,28 @@
+databaseType = "PostgreSql"
+id = "cf04f42e-5950-414f-9e0a-73ec1f8a58cf"
+name = "InventoryMigration"
+
+[flyway]
+locations = [ "filesystem:migrations" ]
+mixed = true
+outOfOrder = true
+schemaModelLocation = "schema-model"
+validateMigrationNaming = true
+
+  [flyway.check]
+  majorTolerance = 0
+
+[flywayDesktop]
+developmentEnvironment = "development"
+shadowEnvironment = "shadow"
+
+[redgateCompare]
+filterFile = "filter.rgf"
+
+[redgateCompare.postgresql.options.ignores]
+ignoreNewlinesInTextObjects = "off"
+
+[environments.target1]
+url = "jdbc:postgresql://localhost:5432/postgres"
+schemas = [ "public" ]
+displayName = "Trabajo2"
